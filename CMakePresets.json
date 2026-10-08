@@ -1,0 +1,100 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "vcpkg-base",
+      "hidden": true,
+      "toolchainFile": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "VCPKG_MANIFEST_FEATURES": "tests"
+      }
+    },
+    {
+      "name": "default",
+      "displayName": "Default (VS 2022)",
+      "description": "Plugin and tests with Visual Studio 2022 and vcpkg",
+      "inherits": "vcpkg-base",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/Build",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ninja",
+      "displayName": "Ninja Multi-Config",
+      "description": "Plugin and tests with Ninja and vcpkg (Linux, macOS, Windows)",
+      "inherits": "vcpkg-base",
+      "generator": "Ninja Multi-Config",
+      "binaryDir": "${sourceDir}/build/ninja"
+    },
+    {
+      "name": "dev",
+      "displayName": "Development (Ninja, Debug, sanitizers)",
+      "description": "Debug build with AddressSanitizer and UBSan and warnings as errors",
+      "inherits": "vcpkg-base",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/dev",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "NEUROSUITE_NWB_SANITIZE": "ON",
+        "NEUROSUITE_NWB_WARNINGS_AS_ERRORS": "ON"
+      },
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "release",
+      "configurePreset": "default",
+      "configuration": "Release"
+    },
+    {
+      "name": "ninja-release",
+      "configurePreset": "ninja",
+      "configuration": "Release"
+    },
+    {
+      "name": "dev",
+      "configurePreset": "dev"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "release",
+      "configurePreset": "default",
+      "configuration": "Release",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "ninja-release",
+      "configurePreset": "ninja",
+      "configuration": "Release",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "dev",
+      "configurePreset": "dev",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}

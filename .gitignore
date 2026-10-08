@@ -1,0 +1,19 @@
+# Build directories
+build
+Build
+build-*
+
+# vcpkg generated directories
+vcpkg_installed/
+
+# Link to the compile commands of a build, for clangd
+compile_commands.json
+
+# IDEs
+.vscode/
+.idea/
+.vs/
+
+# OS files
+.DS_Store
+Thumbs.db

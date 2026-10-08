@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "neurosuite-nwb",
+  "version-string": "0.1.0",
+  "description": "Plugin that lets NeuroScope open Neurodata Without Borders (NWB) files",
+  "license": "GPL-3.0-or-later",
+  "dependencies": [
+    "aqnwb",
+    {
+      "name": "hdf5",
+      "default-features": false,
+      "features": ["cpp", "zlib"]
+    }
+  ],
+  "features": {
+    "tests": {
+      "description": "Build the unit tests",
+      "dependencies": ["gtest"]
+    }
+  }
+}
